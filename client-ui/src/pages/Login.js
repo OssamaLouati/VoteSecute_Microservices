@@ -1,38 +1,53 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import axios from 'axios';
 
-function Login() {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log(`Username: ${username}, Password: ${password}`);
+    const backendURL = 'http://localhost:5000/api/auth'; // Replace with your backend URL
 
+    const handleRegister = async () => {
+        try {
+            const response = await axios.post(`${backendURL}/register`, { email, password });
+            setMessage(response.data.message);
+        } catch (error) {
+            setMessage(error.response?.data?.message || 'Server error');
+        }
+    };
+
+    const handleLogin = async () => {
+        try {
+            const response = await axios.post(`${backendURL}/login`, { email, password });
+            const token = response.data.token;
+            // Store the token in local storage or context
+            localStorage.setItem('jwtToken', token);
+            setMessage('Login successful');
+        } catch (error) {
+            setMessage(error.response?.data?.message || 'Server error');
+        }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Username:
-                <input
-                    type="text"
-                    value={username}
-                    onChange={(event) => setUsername(event.target.value)}
-                />
-            </label>
-            <br />
-            <label>
-                Password:
-                <input
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                />
-            </label>
-            <br />
-            <button type="submit">Login</button>
-        </form>
+        <div>
+            <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Email"
+            />
+            <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+            />
+            <button onClick={handleRegister}>Register</button>
+            <button onClick={handleLogin}>Login</button>
+            {message && <p>{message}</p>}
+        </div>
     );
-}
+};
 
 export default Login;
