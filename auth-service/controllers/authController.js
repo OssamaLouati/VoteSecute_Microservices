@@ -6,6 +6,7 @@ const { secret, expiresIn } = require('../config/jwt');
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
+    const isOk = false;
 
     // Check if the email already exists
     const userExists = await User.findOne({ email });
@@ -39,6 +40,8 @@ exports.login = async (req, res) => {
     // Check if the user exists
     const user = await User.findOne({ email });
 
+    // const isOk = user.isOk;
+
     if (!user) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
@@ -49,6 +52,10 @@ exports.login = async (req, res) => {
     if (!isPasswordValid) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
+
+    // if (!isOk) {
+    //   return res.status(400).json({ message: 'You are not allowed to login' });
+    // }
 
     // Generate and send a JWT token
     const token = jwt.sign({ userId: user._id }, secret, { expiresIn });
