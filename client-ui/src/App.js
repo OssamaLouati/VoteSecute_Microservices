@@ -2,6 +2,8 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import ProtectedRoute from "./hoc/ProtectedRoute";
 
 function App() {
   return (
@@ -11,7 +13,12 @@ function App() {
           <Routes>
             {/* Route for the Login page */}
             <Route path="/login" element={<Login />} />
-            
+            {/* Route for the Home page */}
+            <Route path="/home" element={
+                    <ProtectedRoute>
+                        <Home />
+                    </ProtectedRoute>
+                } />
             {/* Default route for the Home page */}
             <Route path="/" element={<Login/>} />
           </Routes>

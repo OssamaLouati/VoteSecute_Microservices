@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const navigate = useNavigate();
+    const [authMessage, setAuthMessage] = useState(localStorage.getItem('authMessage') || '');
 
-    const backendURL = 'http://localhost:5000/api/auth'; // Replace with your backend URL
+    const backendURL = 'http://localhost:5000/api/auth'; 
 
     const handleRegister = async () => {
         try {
@@ -23,11 +27,20 @@ const Login = () => {
             const token = response.data.token;
             // Store the token in local storage or context
             localStorage.setItem('jwtToken', token);
+            localStorage.setItem('user', email);
+
             setMessage('Login successful');
+
+            navigate('/home');
         } catch (error) {
             setMessage(error.response?.data?.message || 'Server error');
         }
     };
+
+    useEffect(() => {
+        // Clear the message from local storage after reading it
+        localStorage.removeItem('authMessage');
+    }, []);
 
     return (
         <div>
@@ -46,6 +59,7 @@ const Login = () => {
             <button onClick={handleRegister}>Register</button>
             <button onClick={handleLogin}>Login</button>
             {message && <p>{message}</p>}
+            {authMessage && <p>{authMessage}</p>}
         </div>
     );
 };
