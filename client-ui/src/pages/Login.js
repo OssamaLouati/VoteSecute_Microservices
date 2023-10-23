@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../hoc/Axios';
 import { useNavigate } from 'react-router-dom';
-
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState(localStorage.getItem('authMessage') || '');
     const navigate = useNavigate();
-    const [authMessage, setAuthMessage] = useState(localStorage.getItem('authMessage') || '');
 
-    const backendURL = 'http://localhost:5000/api/auth'; 
+    const backendURL = 'http://localhost:4000/api/auth';  // Pointing to the API Gateway
 
     const handleRegister = async () => {
         try {
             const response = await axios.post(`${backendURL}/register`, { email, password });
             setMessage(response.data.message);
         } catch (error) {
-            setMessage(error.response?.data?.message || 'Server error');
+            if (error.response?.status === 429) {
+                setMessage('Too many requests, please try again later.');
+            } else {
+                setMessage(error.response?.data?.message || 'Server error');
+            }
         }
     };
 
@@ -25,15 +27,19 @@ const Login = () => {
         try {
             const response = await axios.post(`${backendURL}/login`, { email, password });
             const token = response.data.token;
-            // Store the token in local storage or context
             localStorage.setItem('jwtToken', token);
             localStorage.setItem('user', email);
 
             setMessage('Login successful');
 
             navigate('/home');
+            
         } catch (error) {
-            setMessage(error.response?.data?.message || 'Server error');
+            if (error.response?.status === 429) {
+                setMessage('Too many requests, please try again later.');
+            } else {
+                setMessage(error.response?.data?.message || 'Server error');
+            }
         }
     };
 
@@ -58,8 +64,8 @@ const Login = () => {
             />
             <button onClick={handleRegister}>Register</button>
             <button onClick={handleLogin}>Login</button>
+
             {message && <p>{message}</p>}
-            {authMessage && <p>{authMessage}</p>}
         </div>
     );
 };
