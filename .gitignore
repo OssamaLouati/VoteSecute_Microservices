@@ -2,3 +2,6 @@
 /auth-service/node_modules/
 /api-gateway/node_modules/
 /candidate-service/node_modules/
+
+/voting-service/node_modules/
+/paiment-service/node_modules/
