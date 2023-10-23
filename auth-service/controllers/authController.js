@@ -6,7 +6,7 @@ const { secret, expiresIn } = require('../config/jwt');
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const isOk = false;
+    const hasVoted = false;
 
     // Check if the email already exists
     const userExists = await User.findOne({ email });
@@ -22,6 +22,7 @@ exports.register = async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
+      hasVoted,
     });
 
     await newUser.save();
@@ -66,3 +67,22 @@ exports.login = async (req, res) => {
     res.status(500).json({ message: 'Server error when Login' });
   }
 };
+
+exports.vertifyHasVoted = async (req, res) => {
+  try {
+    const { email } = req.query; // Note: using req.query to get email parameter from query string
+
+    const user = await User.findOne({ email: email }); 
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    const hasVoted = user.hasVoted;
+
+    res.json({ hasVoted });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error + ' Server error when vertifyHasVoted' });
+  }
+}

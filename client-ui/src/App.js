@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import "./App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import Election from "./pages/Election";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
           <Routes>
             {/* Route for the Login page */}
             <Route path="/login" element={<Login />} />
+
+            {/* Route for the Election page */}
+            <Route path="/election" element={<Election />} />
 
             {/* Route for the Home page */}
             <Route path="/home" element={

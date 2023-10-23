@@ -8,4 +8,6 @@ router.post('/register', authController.register);
 // Login route
 router.post('/login', authController.login);
 
+router.get('/hasVoted', authController.vertifyHasVoted);
+
 module.exports = router;
