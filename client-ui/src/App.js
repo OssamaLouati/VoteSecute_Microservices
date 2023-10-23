@@ -13,14 +13,17 @@ function App() {
           <Routes>
             {/* Route for the Login page */}
             <Route path="/login" element={<Login />} />
+
             {/* Route for the Home page */}
             <Route path="/home" element={
                     <ProtectedRoute>
                         <Home />
                     </ProtectedRoute>
                 } />
+
             {/* Default route for the Home page */}
             <Route path="/" element={<Login/>} />
+            
           </Routes>
         </main>
       </div>
