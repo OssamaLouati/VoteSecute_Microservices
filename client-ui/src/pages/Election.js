@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import styles from "../style/Election.module.css";
 
 const Election = () => {
   const [candidates, setCandidates] = useState([]);
@@ -81,30 +82,34 @@ const Election = () => {
   return (
     <div>
       {Object.entries(candidates).map(([role, candidatesForRole]) => (
-        <div key={role}>
+        <div key={role} className={styles["role-container"]}>
           <h2>{role}</h2>
-          {candidatesForRole.map((candidate) => (
-            <div key={candidate._id}>
-              <input
-                type="radio"
-                name={role}
-                value={candidate._id}
-                onChange={() => handleCandidateSelection(role, candidate._id)}
-                disabled={hasVoted} // Disable the radio buttons if the user has already voted
-              />
-              <label>
-                <img src={candidate.img_URL} alt={candidate.name} width={100} />
-                <p>{candidate.name}</p>
-                <p>{candidate.motivation_letter}</p>
-                <p>{candidate.phone_number}</p>
-              </label>
-            </div>
-          ))}
+          <div className={styles["candidates-list"]}>
+            {candidatesForRole.map((candidate) => (
+              <div key={candidate._id} className={styles["candidate-item"]}>
+                <input
+                  type="radio"
+                  name={role}
+                  value={candidate._id}
+                  onChange={() => handleCandidateSelection(role, candidate._id)}
+                  disabled={hasVoted} // Disable the radio buttons if the user has already voted
+                />
+                <label>
+                  <img
+                    src={candidate.img_URL}
+                    alt={candidate.name}
+                    width={100}
+                  />
+                  <p>{candidate.name}</p>
+                  <p>{candidate.motivation_letter}</p>
+                  <p>{candidate.phone_number}</p>
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
       ))}
-      <button onClick={handleSubmit}>
-        Submit Votes
-      </button>
+      <button onClick={handleSubmit}>Submit Votes</button>
     </div>
   );
 };

@@ -1,0 +1,17 @@
+/* Election.module.css */
+.role-container {
+    margin-bottom: 20px;
+  }
+  
+  .candidates-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+  
+  .candidate-item {
+    flex: 0 0 auto;
+    margin-right: 20px;
+  }
+  
