@@ -26,6 +26,7 @@ const Home = () => {
             <h1>Home Page</h1>
             {userEmail ? <p>User Email: {userEmail}</p> : <button onClick={fetchUserEmail}>Show Email</button>}
             <button onClick={handleLogout}>Logout</button>
+            <button onClick={() => navigate('/election')}>Go to Election Page</button>
         </div>
     );
 };

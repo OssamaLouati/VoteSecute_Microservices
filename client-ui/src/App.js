@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
 import "./App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -9,6 +10,9 @@ import ProtectedRoute from "./hoc/ProtectedRoute";
 function App() {
   return (
     <Router>
+      <Toaster>
+        
+      </Toaster>
       <div className="App">
         <main>
           <Routes>
