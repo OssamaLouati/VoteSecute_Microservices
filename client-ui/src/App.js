@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Election from "./pages/Election";
 import ProtectedRoute from "./hoc/ProtectedRoute";
 import Dashboard from "./pages/Dashboard";
+import ApplyForm from "./pages/ApplyForm";
 
 function App() {
   return (
@@ -41,6 +42,13 @@ function App() {
             <Route path="/admin" element={
                     <ProtectedRoute>
                         <Dashboard />
+                    </ProtectedRoute>
+                } />
+
+            {/* Route for create election page */}
+            <Route path="/create_election" element={
+                    <ProtectedRoute>
+                        <ApplyForm />
                     </ProtectedRoute>
                 } />
             

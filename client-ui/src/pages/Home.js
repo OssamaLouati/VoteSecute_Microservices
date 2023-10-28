@@ -43,6 +43,7 @@ const Home = () => {
       <button onClick={() => navigate("/election")}>Go to Election Page</button>
 
       {isAdmin && <button onClick={ () => navigate("/admin")}>Admin Button</button>}
+      <button onClick={ () => navigate("/create_election")}>Apply for a position</button>
     </div>
   );
 };
