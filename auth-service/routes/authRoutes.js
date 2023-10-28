@@ -3,6 +3,7 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const voteController = require('../controllers/voteController');
 const applyController = require('../controllers/applyController');
+const adminController = require('../controllers/adminController');
 
 
 // Registration route
@@ -22,5 +23,11 @@ router.get('/hasApplied', applyController.verifyHasApplied);
 
 //Route to update the user hasApplied status to true
 router.put('/updateHasApplied', applyController.updateHasApplied);
+
+//Route to check make all user Eligible to apply
+router.put('/make-eligible', adminController.makeUsersEligible);
+
+//Route to check make all user Ineligible to apply
+router.put('/make-ineligible', adminController.makeUsersIneligible);
 
 module.exports = router;
