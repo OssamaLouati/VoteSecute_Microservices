@@ -3,12 +3,11 @@ import axios from "axios";
 import toast from "react-hot-toast";
 
 function ApplyForm() {
-  const location = window.location;
   const [hasApplied, setHasApplied] = useState(false);
-  const [hasNotified, setHasNotified] = useState(false);
+  const location = window.location;
 
   const [formData, setFormData] = useState({
-    role_being_candidated_for: "", // Initialize to an empty string
+    role_being_candidated_for: "",
     img_URL: "",
     name: "",
     motivation_letter: "",
@@ -17,14 +16,11 @@ function ApplyForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
-
-  if (localStorage.getItem("applied")) {
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +36,8 @@ function ApplyForm() {
       toast.success("Application submitted successfully!");
       setTimeout(() => {
         location.reload();
-      }, 1000);
+      }
+      , 1000);
     } catch (error) {
       console.error(error);
     }
@@ -50,28 +47,21 @@ function ApplyForm() {
     const checkIfUserHasApplied = async () => {
       try {
         const email = localStorage.getItem("email");
-
         const response = await axios.get(
           "http://localhost:5000/api/auth/hasApplied",
-          {
-            params: { email },
-          }
+          { params: { email } }
         );
         setHasApplied(response.data.hasApplied);
+        
+
       } catch (error) {
         console.error("Error checking if user has applied:", error);
       }
     };
+    
     checkIfUserHasApplied();
-  }, []);
+}, []);
 
-  if (localStorage.getItem("applied") === "true" && !hasNotified) {
-    toast.error("You have already applied");
-    setHasNotified(true);
-    setTimeout(() => {
-      toast.dismiss();
-    }, 2000);
-  }
 
   return (
     <div>
