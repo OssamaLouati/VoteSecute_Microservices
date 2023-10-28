@@ -28,8 +28,9 @@ const Login = () => {
             const response = await axios.post(`${backendURL}/login`, { email, password });
             const data = response.data;
             localStorage.setItem('jwtToken', data.token);
-            localStorage.setItem('email', email);
+            localStorage.setItem('email', data.email);
             localStorage.setItem('isAdmin', data.isAdmin);
+            localStorage.setItem('isEligibleToApply', data.isEligibleToApply);
 
             setMessage('Login successful');
 

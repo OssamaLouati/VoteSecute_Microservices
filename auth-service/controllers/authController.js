@@ -6,7 +6,6 @@ const { secret, expiresIn } = require('../config/jwt');
 exports.register = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const hasVoted = false;
 
     // Check if the email already exists
     const userExists = await User.findOne({ email });
@@ -22,7 +21,6 @@ exports.register = async (req, res) => {
     const newUser = new User({
       email,
       password: hashedPassword,
-      hasVoted,
     });
 
     await newUser.save();
@@ -61,7 +59,7 @@ exports.login = async (req, res) => {
     // Generate and send a JWT token
     const token = jwt.sign({ userId: user._id }, secret, { expiresIn });
 
-    res.json({ message: 'Login successful', token, isAdmin: user.isAdmin });
+    res.json({ message: 'Login successful', token, userId: user._id, email: user.email, isAdmin: user.isAdmin, isEligibleToApply: user.isEligibleToApply });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error when Login' });

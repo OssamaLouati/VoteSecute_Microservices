@@ -46,7 +46,7 @@ function App() {
                 } />
 
             {/* Route for create election page */}
-            <Route path="/create_election" element={
+            <Route path="/apply" element={
                     <ProtectedRoute>
                         <ApplyForm />
                     </ProtectedRoute>

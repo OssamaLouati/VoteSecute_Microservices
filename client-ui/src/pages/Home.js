@@ -6,6 +6,7 @@ const Home = () => {
   const [userEmail, setUserEmail] = useState("");
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isEligibleToApply, setIsEligibleToApply] = useState(false);
 
   const fetchUserEmail = () => {
     // Logic to fetch the user's email, for example from the backend or local storage
@@ -16,8 +17,11 @@ const Home = () => {
   const handleLogout = () => {
     // Logic to logout the user
     localStorage.removeItem("jwtToken");
-    localStorage.removeItem("user");
     localStorage.removeItem("isAdmin");
+    localStorage.removeItem("isEligibleToApply");
+    localStorage.removeItem("hasApplied");
+    localStorage.removeItem("hasVoted");
+    localStorage.removeItem("email");
     setUserEmail("");
 
     navigate("/login");
@@ -26,6 +30,8 @@ const Home = () => {
   useEffect(() => {
     const isAdminFromLocalStorage = localStorage.getItem("isAdmin");
     setIsAdmin(isAdminFromLocalStorage === "true");
+    const isEligibleToApplyFromLocalStorage = localStorage.getItem("isEligibleToApply");
+    setIsEligibleToApply(isEligibleToApplyFromLocalStorage === "true");
   }, []);
 
   return (
@@ -43,7 +49,7 @@ const Home = () => {
       <button onClick={() => navigate("/election")}>Go to Election Page</button>
 
       {isAdmin && <button onClick={ () => navigate("/admin")}>Admin Button</button>}
-      <button onClick={ () => navigate("/create_election")}>Apply for a position</button>
+      {isEligibleToApply && <button onClick={ () => navigate("/apply")}>Apply for a position</button>}
     </div>
   );
 };
