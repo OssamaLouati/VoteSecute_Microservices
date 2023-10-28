@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Candidate = require('../models/Candidate');
+const resultsController = require('../controllers/resultsController');
 
 // Endpoint to retrieve the voting board
 router.get('/voteBoard', async (req, res) => {
@@ -27,5 +28,8 @@ router.post('/send', async (req, res) => {
         res.status(500).send({ message: 'Server error' });
     }
 });
+
+router.get('/results', resultsController.getResults);
+
 
 module.exports = router;

@@ -1,11 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import "./App.css";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Election from "./pages/Election";
 import ProtectedRoute from "./hoc/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -20,7 +21,11 @@ function App() {
             <Route path="/login" element={<Login />} />
 
             {/* Route for the Election page */}
-            <Route path="/election" element={<Election />} />
+            <Route path="/election" element={
+                    <ProtectedRoute>
+                        <Election />
+                    </ProtectedRoute>
+                } />
 
             {/* Route for the Home page */}
             <Route path="/home" element={
@@ -31,6 +36,13 @@ function App() {
 
             {/* Default route for the Home page */}
             <Route path="/" element={<Login/>} />
+
+            {/* Route for admin dashboard */}
+            <Route path="/admin" element={
+                    <ProtectedRoute>
+                        <Dashboard />
+                    </ProtectedRoute>
+                } />
             
           </Routes>
         </main>

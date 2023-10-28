@@ -26,9 +26,10 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             const response = await axios.post(`${backendURL}/login`, { email, password });
-            const token = response.data.token;
-            localStorage.setItem('jwtToken', token);
+            const data = response.data;
+            localStorage.setItem('jwtToken', data.token);
             localStorage.setItem('email', email);
+            localStorage.setItem('isAdmin', data.isAdmin);
 
             setMessage('Login successful');
 
