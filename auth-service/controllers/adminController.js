@@ -13,6 +13,12 @@ exports.makeUsersEligible = async (req, res) => {
     // Update all users to set isEligibleToApply to true
     await User.updateMany({}, { $set: { isEligibleToApply: true } });
 
+    // Update all users to set isEligibleToVote to true
+    await User.updateMany({}, { $set: { isEligibleToVote: false } });
+
+    // Update All users to set hasApplied and hasVoted to false
+    await User.updateMany({}, { $set: {hasVoted: false } });
+
     res.status(200).json({ message: "All users are now eligible to apply." });
   } catch (error) {
     console.error(error);
@@ -33,6 +39,9 @@ exports.makeUsersIneligible = async (req, res) => {
     }
     // Update all users to set isEligibleToApply to false
     await User.updateMany({}, { $set: { isEligibleToApply: false } });
+
+    // Update all users to set isEligibleToVote to true
+    await User.updateMany({}, { $set: { isEligibleToVote: true } });
 
     res.status(200).json({ message: "All users are now ineligible to apply." });
   } catch (error) {

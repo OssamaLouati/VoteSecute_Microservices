@@ -9,11 +9,11 @@ const Home = () => {
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isEligibleToApply, setIsEligibleToApply] = useState(false);
+  const isEligibleToVote = localStorage.getItem("isEligibleToVote") === "true";
   const areOpened = localStorage.getItem("areOpened") === "true";
   const location = window.location;
 
   const fetchUserEmail = () => {
-    // Logic to fetch the user's email, for example from the backend or local storage
     const email = localStorage.getItem("email"); // Placeholder logic
     setUserEmail(email);
   };
@@ -35,6 +35,7 @@ const Home = () => {
     try{
       await axios.put("http://localhost:5000/api/auth/make-eligible", {isAdmin});
       localStorage.setItem("areOpened", true);
+      localStorage.setItem("isEligibleToVote", true);
       toast.success("Applications are now open");
       setTimeout(() => {
         location.reload();
@@ -48,6 +49,7 @@ const Home = () => {
     try{
       await axios.put("http://localhost:5000/api/auth/make-ineligible", {isAdmin});
       localStorage.setItem("areOpened", false);
+      localStorage.setItem("isEligibleToVote", false);
       toast.success("Applications are now closed");
       setTimeout(() => {
         location.reload();
@@ -59,6 +61,7 @@ const Home = () => {
 
 
   useEffect(() => {
+    fetchUserEmail();
     const isAdminFromLocalStorage = localStorage.getItem("isAdmin");
     setIsAdmin(isAdminFromLocalStorage === "true");
     const isEligibleToApplyFromLocalStorage = localStorage.getItem("isEligibleToApply");
@@ -72,18 +75,15 @@ const Home = () => {
   return (
     <div>
       <h1>Home Page</h1>
+      <h2>Welcome {userEmail}</h2>
 
-      {userEmail ? (
-        <p>User Email: {userEmail}</p>
-      ) : (
-        <button onClick={fetchUserEmail}>Show Email</button>
-      )}
+      
 
       <button onClick={handleLogout}>Logout</button>
 
-      <button onClick={() => navigate("/election")}>Go to Election Page</button>
+      {!areOpened && isEligibleToVote && <button onClick={() => navigate("/election")}>Go to Election Page</button>}
 
-      {isAdmin && <button onClick={ () => navigate("/admin")}>Admin Button</button>}
+      {isAdmin && <button onClick={ () => navigate("/admin")}>See Voting Statistics</button>}
       
       {isAdmin && !areOpened && <button onClick={openApplications}>Open Applications</button>}
       

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from '../hoc/Axios';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState(localStorage.getItem('authMessage') || '');
     const navigate = useNavigate();
 
     const backendURL = 'http://localhost:4000/api/auth';  // Pointing to the API Gateway
@@ -13,12 +13,12 @@ const Login = () => {
     const handleRegister = async () => {
         try {
             const response = await axios.post(`${backendURL}/register`, { email, password });
-            setMessage(response.data.message);
+            toast.success(response.data.message);
         } catch (error) {
             if (error.response?.status === 429) {
-                setMessage('Too many requests, please try again later.');
+                toast.error('Too many requests, please try again later.');
             } else {
-                setMessage(error.response?.data?.message || 'Server error');
+                toast.error(error.response?.data?.message || 'Server error');
             }
         }
     };
@@ -31,16 +31,22 @@ const Login = () => {
             localStorage.setItem('email', data.email);
             localStorage.setItem('isAdmin', data.isAdmin);
             localStorage.setItem('isEligibleToApply', data.isEligibleToApply);
+            localStorage.setItem('hasApplied', data.hasApplied);
+            localStorage.setItem('hasVoted', data.hasVoted);
+            localStorage.setItem('isEligibleToVote', data.isEligibleToVote);
 
-            setMessage('Login successful');
+            toast.success('Login successful');
 
-            navigate('/home');
-            
+            setTimeout(() => {
+                navigate('/home');
+            }, 1000);
+
+
         } catch (error) {
             if (error.response?.status === 429) {
-                setMessage('Too many requests, please try again later.');
+                toast.error('Too many requests, please try again later.');
             } else {
-                setMessage(error.response?.data?.message || 'Server error');
+                toast.error(error.response?.data?.message || 'Server error');
             }
         }
     };
@@ -67,7 +73,6 @@ const Login = () => {
             <button onClick={handleRegister}>Register</button>
             <button onClick={handleLogin}>Login</button>
 
-            {message && <p>{message}</p>}
         </div>
     );
 };

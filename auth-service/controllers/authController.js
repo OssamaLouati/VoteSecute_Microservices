@@ -59,7 +59,7 @@ exports.login = async (req, res) => {
     // Generate and send a JWT token
     const token = jwt.sign({ userId: user._id }, secret, { expiresIn });
 
-    res.json({ message: 'Login successful', token, userId: user._id, email: user.email, isAdmin: user.isAdmin, isEligibleToApply: user.isEligibleToApply });
+    res.json({ message: 'Login successful', token, userId: user._id, email: user.email, isAdmin: user.isAdmin, isEligibleToApply: user.isEligibleToApply,isEligibleToVote: user.isEligibleToVote, hasApplied: user.hasApplied, hasVoted: user.hasVoted });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error when Login' });
