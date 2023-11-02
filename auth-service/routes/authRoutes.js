@@ -24,10 +24,21 @@ router.get('/hasApplied', applyController.verifyHasApplied);
 //Route to update the user hasApplied status to true
 router.put('/updateHasApplied', applyController.updateHasApplied);
 
-//Route to check make all user Eligible to apply
-router.put('/make-eligible', adminController.makeUsersEligible);
+//Route to  make all user Eligible to apply
+router.put('/make-eligible-to-apply', adminController.makeUsersEligibleToApply);
 
 //Route to check make all user Ineligible to apply
-router.put('/make-ineligible', adminController.makeUsersIneligible);
+router.put('/make-ineligible-to-apply', adminController.makeUsersIneligibleToApply);
+
+//Route to make all user Ineligible to vote
+router.put('/closeElection', adminController.makeUsersIneligibleToVote);
+
+//Route to check if the user is eligible to vote
+router.get('/isEligibleToVote', voteController.isEligibleToVote);
+
+//Route to check if the user is eligible to apply
+router.get('/isEligibleToApply', adminController.checkApplicationEligibility);
+
+
 
 module.exports = router;

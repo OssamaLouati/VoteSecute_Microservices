@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import axios from '../hoc/Axios';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -34,6 +34,7 @@ const Login = () => {
             localStorage.setItem('hasApplied', data.hasApplied);
             localStorage.setItem('hasVoted', data.hasVoted);
             localStorage.setItem('isEligibleToVote', data.isEligibleToVote);
+            localStorage.setItem('isEligibleToApply', data.isEligibleToApply);
 
             toast.success('Login successful');
 
@@ -50,11 +51,6 @@ const Login = () => {
             }
         }
     };
-
-    useEffect(() => {
-        // Clear the message from local storage after reading it
-        localStorage.removeItem('authMessage');
-    }, []);
 
     return (
         <div>
