@@ -14,6 +14,22 @@ import {
 } from "recharts";
 import styles from "../style/Dashboard.module.css";
 
+// CustomTooltip component
+const CustomTooltip = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    const { name, img_URL, votes_number } = payload[0].payload;
+    return (
+      <div className={styles.customTooltip}>
+        <img src={img_URL} alt={name} style={{ width: '100px', height: '100px' }} />
+        <p>{label}</p>
+        <p>Votes: {votes_number}</p>  
+      </div>
+    );
+  }
+
+  return null;
+};
+
 function Dashboard() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -50,7 +66,7 @@ function Dashboard() {
         <CSSTransition
           key={showWinners ? "winners" : "statistics"}
           timeout={500} // matches with the transition duration in CSS
-          classNames={styles["fade"]} // class name defined in CSS
+          classNames={styles.fade} // class name defined in CSS
         >
           <div>
             {showWinners
@@ -107,7 +123,7 @@ function Dashboard() {
                           <CartesianGrid strokeDasharray="3 3" />
                           <XAxis dataKey="name" />
                           <YAxis />
-                          <Tooltip />
+                          <Tooltip content={<CustomTooltip />} />
                           <Legend />
                           <Bar dataKey="votes_number">
                             {result.candidates.map((entry, index) => (
