@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const paymentRoutes = require("./routes/paymentRoutes");
+const subscribe = require("./controllers/Async/subscriber");
 const { mongoURI } = require("./config/database");
 
 const app = express();
@@ -24,6 +25,7 @@ mongoose
 // Routes
 app.use("/api/payments", paymentRoutes);
 
+subscribe.subscribe();
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

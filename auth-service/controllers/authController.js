@@ -1,7 +1,8 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { secret, expiresIn } = require('../config/jwt');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+const publish = require("./async/publisher");
+const { secret, expiresIn } = require("../config/jwt");
 
 exports.register = async (req, res) => {
   try {
@@ -11,7 +12,7 @@ exports.register = async (req, res) => {
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return res.status(400).json({ message: 'Email already exists' });
+      return res.status(400).json({ message: "Email already exists" });
     }
 
     // Hash the password
@@ -24,11 +25,12 @@ exports.register = async (req, res) => {
     });
 
     await newUser.save();
+    publish.publish(email);
 
-    res.status(201).json({ message: 'Registration successful' });
+    res.status(201).json({ message: "Registration successful" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -42,14 +44,14 @@ exports.login = async (req, res) => {
     // const isOk = user.isOk;
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     // Compare passwords
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(400).json({ message: 'Invalid email or password' });
+      return res.status(400).json({ message: "Invalid email or password" });
     }
 
     // if (!isOk) {
@@ -59,12 +61,19 @@ exports.login = async (req, res) => {
     // Generate and send a JWT token
     const token = jwt.sign({ userId: user._id }, secret, { expiresIn });
 
-    res.json({ message: 'Login successful', token, userId: user._id, email: user.email, isAdmin: user.isAdmin, isEligibleToApply: user.isEligibleToApply,isEligibleToVote: user.isEligibleToVote, hasApplied: user.hasApplied, hasVoted: user.hasVoted });
+    res.json({
+      message: "Login successful",
+      token,
+      userId: user._id,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      isEligibleToApply: user.isEligibleToApply,
+      isEligibleToVote: user.isEligibleToVote,
+      hasApplied: user.hasApplied,
+      hasVoted: user.hasVoted,
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Server error when Login' });
+    res.status(500).json({ message: "Server error when Login" });
   }
 };
-
-
-

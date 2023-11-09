@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const User = require("../models/User");
 
 exports.verifyHasVoted = async (req, res) => {
   try {
@@ -18,6 +18,26 @@ exports.verifyHasVoted = async (req, res) => {
     res
       .status(500)
       .json({ message: error + " Server error when vertifyHasVoted" });
+  }
+};
+exports.verifyifusercanVote = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    const user = await User.findOne({ email: email });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const isEligibleToVote = user.isEligibleToVote;
+
+    res.json({ isEligibleToVote });
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: error + " Server error when vertifyifusercanVote" });
   }
 };
 
