@@ -5,7 +5,6 @@ const candidate = require('../models/Candidate');
 exports.getResults = async (req, res) => {
     try {
         const allCandidates = await candidate.find();
-        console.log(allCandidates);
 
         // Use the Mongoose model to get distinct roles
         const roles = await candidate.distinct('role_being_candidated_for');

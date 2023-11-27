@@ -8,6 +8,7 @@ const payementSchema = new mongoose.Schema({
   solde: {
     type: Number,
     required: true,
+    default: 200,
     min: 0,
   },
 });

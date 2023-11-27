@@ -2,10 +2,9 @@ const Payment = require("../models/Payment");
 
 exports.createPaymentAccount = async (req, res) => {
   try {
-    const { user_id, solde } = req.body;
+    const user_id  = req.body;
     const newPayment = new Payment({
       user_id,
-      solde,
     });
 
     await newPayment.save();
@@ -19,7 +18,7 @@ exports.createPaymentAccount = async (req, res) => {
   }
 };
 
-exports.Payment = async (req, res) => {
+exports.Pay = async (req, res) => {
   try {
     const { user_id } = req.body;
     const payment = await Payment.findOne({ user_id });

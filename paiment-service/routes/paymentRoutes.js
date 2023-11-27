@@ -3,8 +3,9 @@ const router = express.Router();
 const paymentController = require("../controllers/PaymentController");
 
 // payment action
-router.post("/payment", paymentController.Payment);
+router.post("/pay", paymentController.Pay);
+
 //create bank account
-router.post("/bank", paymentController.createPaymentAccount);
+router.post("/createPaymentAccount", paymentController.createPaymentAccount);
 
 module.exports = router;
