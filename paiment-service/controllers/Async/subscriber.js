@@ -16,7 +16,7 @@ exports.subscribe = () => {
       chanel.consume(queueName, (msg) => {
         const email = msg.content.toString();
         console.log(`Received: ${msg.content.toString()}`);
-        paymentController.createPaymentAccountAsync(email);
+        paymentController.AsyncCreateAccount(email);
         chanel.ack(msg);
       });
     });
@@ -39,7 +39,7 @@ exports.subscribeVote = () => {
         const email = msg.content.toString();
         console.log(`email voter: ${msg.content.toString()}`);
         chanel.ack(msg);
-        const response = await paymentController.PaymentAsync(email);
+        const response = await paymentController.AsyncPay(email);
         publishvote.publishvote(response);
       });
     });
