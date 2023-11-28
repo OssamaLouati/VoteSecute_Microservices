@@ -6,7 +6,6 @@ exports.AsyncCreateAccount = async (msg) => {
     const email = msg;
     const newPayment = new Payment({
       email,
-      solde: 70,
     });
 
     await newPayment.save();
