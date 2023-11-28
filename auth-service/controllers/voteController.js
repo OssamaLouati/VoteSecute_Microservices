@@ -20,26 +20,6 @@ exports.verifyHasVoted = async (req, res) => {
       .json({ message: error + " Server error when vertifyHasVoted" });
   }
 };
-exports.verifyifusercanVote = async (req, res) => {
-  try {
-    const { email } = req.query;
-
-    const user = await User.findOne({ email: email });
-
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const isEligibleToVote = user.isEligibleToVote;
-
-    res.json({ isEligibleToVote });
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ message: error + " Server error when vertifyifusercanVote" });
-  }
-};
 
 exports.updateHasVoted = async (req, res) => {
   try {
@@ -67,21 +47,22 @@ exports.updateHasVoted = async (req, res) => {
 };
 
 exports.isEligibleToVote = async (req, res) => {
-  try{
-    const {email} = req.query;
+  try {
+    const { email } = req.query;
 
-    const user = await User.findOne({email: email});
+    const user = await User.findOne({ email: email });
 
-    if(!user){
-      return res.status(404).json({message: "User not found"});
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
     const isEligibleToVote = user.isEligibleToVote;
 
-    res.json({isEligibleToVote});
-  }
-  catch(error){
+    res.json({ isEligibleToVote });
+  } catch (error) {
     console.error(error);
-    res.status(500).json({message: error + " Server error when isEligibleToVote"});
+    res
+      .status(500)
+      .json({ message: error + " Server error when isEligibleToVote" });
   }
-}
+};

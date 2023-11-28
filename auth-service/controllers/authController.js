@@ -25,7 +25,7 @@ exports.register = async (req, res) => {
     });
 
     await newUser.save();
-    publish.publish(email);
+    await publish.publish(email);
 
     res.status(201).json({ message: "Registration successful" });
   } catch (error) {

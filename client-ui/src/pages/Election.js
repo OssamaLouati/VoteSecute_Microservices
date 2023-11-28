@@ -60,7 +60,7 @@ const Election = () => {
         return;
       }
       const votes = Object.values(selectedCandidates);
-      await axios.post("http://localhost:7000/send", { votes });
+      await axios.post("http://localhost:7000/sendVotes", { votes });
       toast.success("Votes submitted successfully");
 
       const email = localStorage.getItem("email");
