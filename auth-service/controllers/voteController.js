@@ -65,3 +65,23 @@ exports.updateHasVoted = async (req, res) => {
       .json({ message: error + " Server error when updateHasVoted" });
   }
 };
+
+exports.isEligibleToVote = async (req, res) => {
+  try{
+    const {email} = req.query;
+
+    const user = await User.findOne({email: email});
+
+    if(!user){
+      return res.status(404).json({message: "User not found"});
+    }
+
+    const isEligibleToVote = user.isEligibleToVote;
+
+    res.json({isEligibleToVote});
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({message: error + " Server error when isEligibleToVote"});
+  }
+}
