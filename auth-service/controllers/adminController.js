@@ -78,7 +78,7 @@ exports.makeUsersIneligibleToVote = async (req, res) => {
 //check if users are eligible to Apply
 exports.checkApplicationEligibility = async (req, res) => {
   try{
-    const {email} = req.body;
+    const email = req.body;
 
     const user = await User.findOne({email: email});
 

@@ -66,49 +66,6 @@ exports.sendVotes = async (req, res) => {
       throw new Error(paymentStatus);
     }
 
-    /*
-    let queueName = "VoteQueue-Response";
-    chanel.sendToQueue("VoteQueue", Buffer.from(message));
-    await chanel.consume(queueName, async (msg) => {
-      console.log("Receive from the queue VoteQueue-Response");
-      const message = msg.content.toString();
-      console.log(`ReceivedPaymentResponse: ${msg.content.toString()}`);
-      if (message === "Your Action has been done successfully") {
-        await Vote.updateOne({ email: email }, { state: Done });
-      } else {
-        await Vote.updateOne({ email: email }, { state: Failed });
-        setTimeout(async () => {
-          await Vote.deleteOne({ email: email });
-        }, 600000);
-        throw new Error(message);
-      }
-    });
-    
-    
-    sub(async (err, message) => {
-      if (err) {
-        throw new Error(err);
-      } else {
-        console.log("Received message:", message);
-        if (message === "Your Action has been done successfully") {
-          await Vote.updateOne({ email: email }, { state: Done });
-        } else {
-          await Vote.updateOne({ email: email }, { state: Failed });
-          setTimeout(async () => {
-            await Vote.deleteOne({ email: email });
-          }, 60000);
-          throw new Error(message);
-        }
-      }
-    });*/
-
-    // For each candidate ID, increment the votes_number by 1
-    /*for (const candidateId of votes) {
-      await candidateId.findByIdAndUpdate(candidateId, {
-        $inc: { votes_number: 1 },
-      });
-    }*/
-
     res.send({ message: "Votes submitted successfully" });
   } catch (error) {
     res.status(500).send({ message: "Server error" });
@@ -180,28 +137,13 @@ const waitForPaymentStatus = () => {
   });
 };
 
-exports.changevotestate = async (msg) => {
-  try {
-    let message = msg;
-    if (message === "Your Action has been done successfully") {
-      await Vote.updateOne({ email: email }, { state: Done });
-    } else {
-      await Vote.updateOne({ email: email }, { state: Failed });
-      setTimeout(async () => {
-        await Vote.deleteOne({ email: email });
-      }, 600000);
-      throw new Error(message);
-    }
-  } catch (error) {
-    throw new Error("server Error");
-  }
-};
 
 exports.getVoteBoard = async (req, res) => {
   try {
     const candidates = await candidates.find();
+    console.log(candidates);
     res.json(candidates);
   } catch (error) {
-    res.status(500).send({ message: "Server error" });
+    res.status(500).send({ message: `${error}  Server error` });
   }
 };
