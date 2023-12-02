@@ -67,7 +67,7 @@ exports.AsyncPay = async (msg) => {
     const email = msg;
     const payment = await Payment.findOne({ email });
     console.log("Payment process");
-
+    
     if (!payment) {
       console.log("invalide email");
       const msg="invalide email";

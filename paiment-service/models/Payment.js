@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const payementSchema = new mongoose.Schema({
-  user_id: {
+  email: {
     type: String,
     required: true,
     unique: true,
@@ -8,6 +8,7 @@ const payementSchema = new mongoose.Schema({
   solde: {
     type: Number,
     required: true,
+    default: 200,
     min: 0,
   },
 });
