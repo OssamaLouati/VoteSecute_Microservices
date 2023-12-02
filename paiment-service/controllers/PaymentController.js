@@ -1,5 +1,5 @@
-const { response } = require("express");
 const Payment = require("../models/Payment");
+const publish = require("./Async/publisher");
 
 exports.AsyncCreateAccount = async (msg) => {
   try {
@@ -10,29 +10,39 @@ exports.AsyncCreateAccount = async (msg) => {
 
     await newPayment.save();
 
-    console.log({ message: "Your Payment has been registered successfully" });
+    console.log({ message: "Your Bank Account has been created successfully" });
   } catch (error) {
     console.error(error);
   }
 };
 
 exports.AsyncPay = async (msg) => {
+  
   try {
     const email = msg;
     const payment = await Payment.findOne({ email });
+    console.log("Payment process");
+
     if (!payment) {
-      return "invalide email";
+      console.log("invalide email");
+      const msg="invalide email";
+      publish.publishvote(msg);
     }
     if (payment.solde - 50 < 0) {
-      return "Insufisant solde to do the action";
+      console.log("Insufisant solde to do the action");
+      const msg="Insufisant solde to do the action";
+      publish.publishvote(msg);
+    } else {
+      let newsolde = payment.solde - 50;
+      payment.solde = newsolde;
+
+      await payment.save();
+      console.log("Your Action has been done successfully");
+      const msg = "Your Action has been done successfully";
+      publish.publishvote(msg);
     }
-    let newsolde = payment.solde - 50;
-    payment.solde = newsolde;
-
-    await payment.save();
-
-    return "Your Action has been done successfully";
   } catch (error) {
-    return "Server error";
+    const msg="Server error";
+      publish.publishvote(msg);
   }
 };

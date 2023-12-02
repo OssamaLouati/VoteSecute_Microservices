@@ -14,9 +14,6 @@ router.post("/login", authController.login);
 //Route to check if the user has voted
 router.get("/hasVoted", voteController.verifyHasVoted);
 
-//Route to check if the user can vote
-router.get("/canVote", voteController.verifyifusercanVote);
-
 //Route to update the user hasVoted status to true
 router.put("/updateHasVoted", voteController.updateHasVoted);
 

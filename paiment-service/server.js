@@ -26,6 +26,7 @@ mongoose
 app.use("/api/payments", paymentRoutes);
 
 subscribe.subscribe();
+subscribe.subscribeVote();
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
