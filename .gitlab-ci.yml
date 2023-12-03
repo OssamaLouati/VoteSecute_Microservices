@@ -1,0 +1,11 @@
+stages:
+  - triggers
+
+candidate_service:
+  stage: triggers
+  trigger:
+    include: candidate-service/.gitlab-ci.yml
+  rules:
+    - changes:
+      - candidate_service/**/*  
+  
