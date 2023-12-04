@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const paymentRoutes = require("./routes/paymentRoutes");
 const { mongoURI } = require("./config/database");
-
+const subscribe=require('./controllers/Async/subscriber')
 const app = express();
 
 // Middleware
@@ -23,6 +23,9 @@ mongoose
 
 // Routes
 app.use("/api/payments", paymentRoutes);
+
+subscribe.subscribe();
+subscribe.subscribeVote();
 
 const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {

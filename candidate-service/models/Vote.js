@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 const voteSchema = new mongoose.Schema({
-  user_id: {
+  email: {
     type: String,
     required: true,
     unique: true,
   },
   votes: {
-    type: [[String]],
+    type: [{}],
+    required: true,
+  },
+  state: {
+    type: String,
     required: true,
   },
 });

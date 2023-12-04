@@ -59,11 +59,11 @@ const Election = () => {
         toast.error("You have already voted");
         return;
       }
+      const email = localStorage.getItem("email");
       const votes = Object.values(selectedCandidates);
-      await axios.post("http://localhost:7000/send", { votes });
+      await axios.post("http://localhost:7000/send", {email , votes });
       toast.success("Votes submitted successfully");
 
-      const email = localStorage.getItem("email");
       const response = await axios.put(
         "http://localhost:5000/api/auth/updateHasVoted",
         { email }
